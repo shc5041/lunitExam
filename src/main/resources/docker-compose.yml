@@ -28,6 +28,7 @@ services:
       LUNIT_DB_HOST: db:3306
       LUNIT_DB_USER: lunit
       LUNIT_DB_PASSWORD: lunit
+      LUNIT_DB_DOWNLOAD: /app/download
     networks:
     - lunitn
 

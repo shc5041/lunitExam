@@ -1,5 +1,7 @@
 package com.example.lunitexam.service;
 
+import com.example.lunitexam.exception.ErrorCode;
+import com.example.lunitexam.exception.LunitExamException;
 import com.example.lunitexam.model.dao.SlideInfo;
 import com.example.lunitexam.repository.SlideInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,11 +12,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedInputStream;
@@ -29,8 +28,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @Slf4j
@@ -40,6 +37,10 @@ public class SlideInfoService {
     @Value("${spring.servlet.multipart.location}") // application 의 properties 의 변수
     private String uploadPath;
     private final SlideInfoRepository slideInfoRepository;
+
+    public Page<SlideInfo> findAll(Pageable pageable) {
+        return slideInfoRepository.findAll(pageable);
+    }
 
     public Page<SlideInfo> findByUserId(String userId, Pageable pageable) {
         return slideInfoRepository.findByUserId(userId, pageable);
@@ -52,8 +53,12 @@ public class SlideInfoService {
     public Page<SlideInfo> findByUserIdAndCreatedDateBetween(String userId, LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable) {
         return slideInfoRepository.findByUserIdAndCreatedDateBetween(userId, startDateTime, endDateTime, pageable);
     }
+    public Optional<SlideInfo> findByIdxAndOriginFileName(Long idx, String originFileName){
+        return slideInfoRepository.findByIdxAndOriginFileName(idx, originFileName);
+    }
 
     @SneakyThrows
+    @Transactional
     public Boolean uploadFile(String userId, MultipartFile multipartFile) {
 
         String originalName = Objects.requireNonNull(multipartFile.getOriginalFilename()).trim();
@@ -89,9 +94,6 @@ public class SlideInfoService {
         if (slideInfoOptional.isPresent()) {
             SlideInfo slideInfo = slideInfoOptional.get();
             resource = getFileAsResource(slideInfo.getPath());
-
-            // 파일 다운로드를 위한 ResponseEntity 생성
-
         }
         return resource;
     }
@@ -110,7 +112,8 @@ public class SlideInfoService {
             }
             isUpload = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IOException: ", e);
+            throw new LunitExamException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
         return isUpload;
     }
@@ -136,7 +139,6 @@ public class SlideInfoService {
     }
 
     public Resource getFileAsResource(String path) throws IOException {
-//        AtomicReference<Path> foundFile = null;
         Path dirPath = Paths.get(path);
         if(dirPath.toFile().exists()){
             return new UrlResource(dirPath.toUri());

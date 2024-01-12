@@ -1,5 +1,6 @@
 package com.example.lunitexam.model.dao;
 
+import com.example.lunitexam.model.dto.AnalysisDecisionDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
@@ -34,7 +35,6 @@ import java.util.List;
 @Setter
 @ToString(exclude = "gridAnalyses")
 @Table(
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"path"})},
         indexes = { @Index(name = "idx_user_id", columnList = "userId")}
 )
 @EntityListeners(AuditingEntityListener.class)
@@ -43,12 +43,9 @@ public class AnalysisDecision {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @Column(updatable = false)
     private String originFileName;
 
-    @Column(updatable = false)
     private String path;
-    @Column(updatable = false)
     private String userId;
 
     private Boolean decision;
@@ -68,5 +65,20 @@ public class AnalysisDecision {
     @LastModifiedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedDate;
+
+    public AnalysisDecisionDto toEntity(AnalysisDecision analysisDecision){
+        return AnalysisDecisionDto.builder()
+                .idx(idx)
+                .createdDate(createdDate)
+                .updatedDate(updatedDate)
+                .gridAnalyses(gridAnalyses)
+                .originFileName(originFileName)
+                .decision(decision)
+                .score(score)
+                .path(path)
+                .userId(userId)
+                .build();
+
+    }
 
 }
