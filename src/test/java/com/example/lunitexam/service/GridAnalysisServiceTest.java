@@ -36,4 +36,8 @@ class GridAnalysisServiceTest {
         Page<GridAnalysis> gridAnalysisPage = gridAnalysisService.findByAnalysisDecisionIdx(3L,pageable);
         assertEquals(gridAnalysisPage.getTotalElements(), 49);
     }
+
+    @Test
+    void testFindByUserId() {
+    }
 }

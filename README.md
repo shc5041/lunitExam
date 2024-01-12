@@ -23,3 +23,9 @@
 >>> 1. GET /api/grid/all - 모든 grid 데이터를 가져온다. 
 >>> 2. GET /api/grid/analysisDecisionIdx/{idx} - 상위 부모의 idx값으로 검색 결과를 가져온다. 
 >>> 3. GET /api/grid/userId/{userId} - userId별로 데이터를 가져오며, 또, 기간별 검색을 하고 싶을때는 queryParam으로 startDateTime 및 endDateTime를 주면 된다.
+
+실행 방법 
+-------------
+> required : jdk - openjdk17 
+>>mac인 경우 chmod +x ./execute.sh 실행 한 후 `zsh: operation not permitted: ./execute.sh` 오류가 날 경우 xattr -d com.apple.quarantine ./execute.sh 를 해준다. 
+>> LunitExam에서 ./execute.sh를 하면 빌드 및 docker compose가 실행된다. 

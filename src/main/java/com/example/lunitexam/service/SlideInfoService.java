@@ -50,8 +50,9 @@ public class SlideInfoService {
     public Page<SlideInfo> findByUserIdAndOriginFileNameContaining(String userId, String originFileName, Pageable pageable) {
         return slideInfoRepository.findByUserIdAndOriginFileNameContaining(userId, originFileName, pageable);
     }
-    public Page<SlideInfo> findByUserIdAndOriginFileNameContainingAndCreatedDateBetween(String originFileName, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
-        return slideInfoRepository.findByUserIdAndOriginFileNameContainingAndCreatedDateBetween(originFileName,startDate, endDate, pageable);
+    public Page<SlideInfo> findByUserIdAndOriginFileNameContainingAndCreatedDateBetween
+            (String userId, String originFileName, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+        return slideInfoRepository.findByUserIdAndOriginFileNameContainingAndCreatedDateBetween(userId, originFileName,startDate, endDate, pageable);
     }
 
     public Page<SlideInfo> findByUserIdAndCreatedDateBetween(String userId, LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable) {

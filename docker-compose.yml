@@ -6,6 +6,8 @@ services:
     volumes:
     - db:/var/lib/mysql
     restart: unless-stopped
+    ports:
+      - "3306:3306"
     environment:
       MARIADB_ROOT_PASSWORD: lunit
       MARIADB_DATABASE: lunitexam
@@ -19,6 +21,8 @@ services:
       context: .
       dockerfile: Dockerfile
     image: lunit:latest
+    volumes:
+      - lunit:/app/download
     depends_on:
     - db
     ports:
@@ -35,6 +39,7 @@ services:
 
 volumes:
   db: {}
+  lunit: {}
 
 networks:
   lunitn: {}

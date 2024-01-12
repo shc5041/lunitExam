@@ -79,6 +79,8 @@ public class SlideInfoController {
     @GetMapping("/userId/{userId}/fileName/{fileName}")
     @Operation(description = "upload한 userId와 fileName(like 검색)으로 검색을 합니다. pageable의 default 값들은 page:0, size:20, sort: idx 필드로 됩니다. ")
     public ResponseEntity<Page<SlideInfo>> findByUserIdAndOriginFileName(@PathVariable String userId,
+                                                                         @PathVariable String fileName,
+
                                                                          @Schema(defaultValue = "2024-01-01 00:00:00")
                                                                          @RequestParam(value = "startDateTime", required = false)
                                                                          @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDateTime,
@@ -87,10 +89,9 @@ public class SlideInfoController {
                                                                              @RequestParam(value = "endDateTime", required = false)
                                                                              @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDateTime,
 
-                                                                         @PathVariable String fileName,
                                                                          @ParameterObject @PageableDefault(sort = {"idx"}, value = 20) Pageable pageable) {
         if (startDateTime != null && endDateTime != null) {
-            return new ResponseEntity<>(slideInfoService.findByUserIdAndOriginFileNameContainingAndCreatedDateBetween(userId, startDateTime, endDateTime, pageable), HttpStatus.OK);
+            return new ResponseEntity<>(slideInfoService.findByUserIdAndOriginFileNameContainingAndCreatedDateBetween(userId,fileName, startDateTime, endDateTime, pageable), HttpStatus.OK);
         } else if (startDateTime == null && endDateTime != null) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         } else if (startDateTime != null && endDateTime == null) {
