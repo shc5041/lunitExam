@@ -1,0 +1,4 @@
+1. 프로젝트를 빌드하여 jar 파일생성
+2. docker-compose -f docker-compose.yml up --build -d
+3. docker-compose ps
+4. 중지할 경우, docker-compose down => 중지하더라도 mariadb data는 삭제되지 않는다. state 유지

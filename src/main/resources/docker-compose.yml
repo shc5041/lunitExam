@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  db:
+    image: mariadb:10.11
+    volumes:
+    - db:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: lunit
+      MARIADB_DATABASE: lunit
+      MARIADB_USER: lunit
+      MARIADB_PASSWORD: lunit
+    networks:
+    - lunitn
+
+  lunit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lunit:latest
+    depends_on:
+    - db
+    ports:
+    - "8280:8280"
+    restart: unless-stopped
+    environment:
+      LUNIT_DB_HOST: db:3306
+      LUNIT_DB_USER: lunit
+      LUNIT_DB_PASSWORD: lunit
+    networks:
+    - lunitn
+
+volumes:
+  db: {}
+
+networks:
+  lunitn: {}
