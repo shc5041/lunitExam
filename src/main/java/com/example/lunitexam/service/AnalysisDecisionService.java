@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -36,9 +37,14 @@ public class AnalysisDecisionService {
     public Page<AnalysisDecision> findByUserId(String userId, Pageable pageable) {
         return analysisDecisionRepository.findByUserId(userId, pageable);
     }
+    public Page<AnalysisDecision> findByUserIdAndCreatedDateBetween(String userId, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable){
+        return analysisDecisionRepository.findByUserIdAndCreatedDateBetween(userId,startDate, endDate, pageable);
+    }
     public Page<AnalysisDecision> findByOriginFileName(String originFileName, Pageable pageable) {
         return analysisDecisionRepository.findByOriginFileName(originFileName, pageable);
     }
+
+
 
     /**
      * 분석 요청이 들어오면 gridAnalysis로 분석 요청을 한다.

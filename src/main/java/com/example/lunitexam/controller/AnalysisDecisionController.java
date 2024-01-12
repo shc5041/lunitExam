@@ -5,6 +5,7 @@ import com.example.lunitexam.model.dao.SlideInfo;
 import com.example.lunitexam.model.dto.AnalysisDecisionDto;
 import com.example.lunitexam.service.AnalysisDecisionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,14 +13,17 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 
 @RestController
 @Slf4j
@@ -36,9 +40,24 @@ public class AnalysisDecisionController {
     }
     @GetMapping("/userId/{userId}")
     @Operation(description = "분석된 파일의 decision과 score를 userId 별로 반환 합니다. pageable의 default 값들은 page:0, size:20, sort: idx 필드로 됩니다. ")
-    public ResponseEntity<Page<AnalysisDecision>> findByUserId(@PathVariable  String userId,
+    public ResponseEntity<?> findByUserId(@PathVariable  String userId,
+
+                                                               @Schema(defaultValue = "2024-01-01 00:00:00")
+                                                               @RequestParam(value = "startDateTime", required = false)
+                                                               @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDateTime,
+
+                                                               @Schema(defaultValue = "2024-12-31 23:59:59")
+                                                               @RequestParam(value = "endDateTime", required = false)
+                                                               @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDateTime,
                                                                @ParameterObject @PageableDefault(sort = {"idx"}, value = 20)
                                                                Pageable pageable) {
+        if (startDateTime != null && endDateTime != null) {
+            return new ResponseEntity<>(analysisDecisionService.findByUserIdAndCreatedDateBetween(userId, startDateTime, endDateTime, pageable), HttpStatus.OK);
+        } else if (startDateTime == null && endDateTime != null) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        } else if (startDateTime != null && endDateTime == null) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<> (analysisDecisionService.findByUserId(userId, pageable), HttpStatus.OK);
     }
     @GetMapping("/fileName/{fileName}")

@@ -47,7 +47,7 @@ public class SlideInfoController {
 
     @GetMapping("/all")
     @Operation(description = "2. 파일 upload된 data를 전체 가져오며, pageable의 default 값들은 page:0, size:20, sort: idx 필드로 됩니다. ")
-    public ResponseEntity<Page<SlideInfo>> findByUserIdAndOriginFileName(@ParameterObject @PageableDefault(sort = {"idx"}, value = 20) Pageable pageable) {
+    public ResponseEntity<Page<SlideInfo>> findAll(@ParameterObject @PageableDefault(sort = {"idx"}, value = 20) Pageable pageable) {
         return new ResponseEntity<>(slideInfoService.findAll(pageable), HttpStatus.OK);
     }
 
@@ -55,7 +55,7 @@ public class SlideInfoController {
     @Operation(description = "특정 사용자가 upload 한 데이터를 가져옵니다. queryParam으로 " +
             "startDateTime, endDateTime을 줄 경우 범위 검색을 합니다.(필수 아님) " +
             "범위 검색시 format은 yyyy-MM-dd HH:mm:ss 이며, pageable의 default 값들은 page:0, size:20, sort: idx 필드로 됩니다. ")
-    public ResponseEntity<Page<SlideInfo>> findByUserId(@PathVariable String userId,
+    public ResponseEntity<?> findByUserId(@PathVariable String userId,
                                                         @Schema(defaultValue = "2024-01-01 00:00:00")
                                                         @RequestParam(value = "startDateTime", required = false)
                                                         @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDateTime,
@@ -69,19 +69,33 @@ public class SlideInfoController {
         if (startDateTime != null && endDateTime != null) {
             return new ResponseEntity<>(slideInfoService.findByUserIdAndCreatedDateBetween(userId, startDateTime, endDateTime, pageable), HttpStatus.OK);
         } else if (startDateTime == null && endDateTime != null) {
-            //exception 처리
-            return null;
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         } else if (startDateTime != null && endDateTime == null) {
-            //exception 처리
-            return null;
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(slideInfoService.findByUserId(userId, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/userId/{userId}/fileName/{fileName}")
     @Operation(description = "upload한 userId와 fileName(like 검색)으로 검색을 합니다. pageable의 default 값들은 page:0, size:20, sort: idx 필드로 됩니다. ")
-    public ResponseEntity<Page<SlideInfo>> findByUserIdAndOriginFileName(@PathVariable String userId, @PathVariable String fileName,
+    public ResponseEntity<Page<SlideInfo>> findByUserIdAndOriginFileName(@PathVariable String userId,
+                                                                         @Schema(defaultValue = "2024-01-01 00:00:00")
+                                                                         @RequestParam(value = "startDateTime", required = false)
+                                                                         @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDateTime,
+
+                                                                         @Schema(defaultValue = "2024-12-31 23:59:59")
+                                                                             @RequestParam(value = "endDateTime", required = false)
+                                                                             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDateTime,
+
+                                                                         @PathVariable String fileName,
                                                                          @ParameterObject @PageableDefault(sort = {"idx"}, value = 20) Pageable pageable) {
+        if (startDateTime != null && endDateTime != null) {
+            return new ResponseEntity<>(slideInfoService.findByUserIdAndOriginFileNameContainingAndCreatedDateBetween(userId, startDateTime, endDateTime, pageable), HttpStatus.OK);
+        } else if (startDateTime == null && endDateTime != null) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        } else if (startDateTime != null && endDateTime == null) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(slideInfoService.findByUserIdAndOriginFileNameContaining(userId, fileName, pageable), HttpStatus.OK);
     }
 

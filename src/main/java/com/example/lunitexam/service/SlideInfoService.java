@@ -2,6 +2,7 @@ package com.example.lunitexam.service;
 
 import com.example.lunitexam.exception.ErrorCode;
 import com.example.lunitexam.exception.LunitExamException;
+import com.example.lunitexam.model.dao.AnalysisDecision;
 import com.example.lunitexam.model.dao.SlideInfo;
 import com.example.lunitexam.repository.SlideInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,9 @@ public class SlideInfoService {
 
     public Page<SlideInfo> findByUserIdAndOriginFileNameContaining(String userId, String originFileName, Pageable pageable) {
         return slideInfoRepository.findByUserIdAndOriginFileNameContaining(userId, originFileName, pageable);
+    }
+    public Page<SlideInfo> findByUserIdAndOriginFileNameContainingAndCreatedDateBetween(String originFileName, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+        return slideInfoRepository.findByUserIdAndOriginFileNameContainingAndCreatedDateBetween(originFileName,startDate, endDate, pageable);
     }
 
     public Page<SlideInfo> findByUserIdAndCreatedDateBetween(String userId, LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable) {

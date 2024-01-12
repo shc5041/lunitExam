@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -35,9 +36,15 @@ public class GridAnalysisService {
         return gridAnalysisRepository.findByUserId(userId, pageable);
     }
 
+    public Page<GridAnalysis> findByUserIdAndCreatedDateBetween(String userId, LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable ){
+        return gridAnalysisRepository.findByUserIdAndCreatedDateBetween(userId, startDateTime, endDateTime,  pageable);
+    }
+
     public Page<GridAnalysis> findByAnalysisDecisionIdx(Long Idx, Pageable pageable) {
         return gridAnalysisRepository.findByAnalysisDecision_Idx(Idx, pageable);
     }
+
+
 
     @Transactional
     public List<GridAnalysis> requestGridAnalysis(AnalysisDecision analysisDecision) {
