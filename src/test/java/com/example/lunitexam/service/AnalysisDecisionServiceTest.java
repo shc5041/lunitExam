@@ -23,7 +23,7 @@ class AnalysisDecisionServiceTest {
     private AnalysisDecisionService analysisDecisionService;
     @Test
     void requestGridAnalysis() throws JsonProcessingException {
-        AnalysisDecisionDto analysisDecision = analysisDecisionService.requestGridAnalysis("test",1L, "CMU-1-JP2K-33005 (1).svs");
+        AnalysisDecisionDto analysisDecision = analysisDecisionService.requestGridAnalysis("test",1L);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(analysisDecision));

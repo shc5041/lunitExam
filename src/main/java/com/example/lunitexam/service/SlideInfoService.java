@@ -46,8 +46,8 @@ public class SlideInfoService {
         return slideInfoRepository.findByUserId(userId, pageable);
     }
 
-    public Page<SlideInfo> findByUserIdAndOriginFileName(String userId, String originFileName, Pageable pageable) {
-        return slideInfoRepository.findByUserIdAndOriginFileName(userId, originFileName, pageable);
+    public Page<SlideInfo> findByUserIdAndOriginFileNameContaining(String userId, String originFileName, Pageable pageable) {
+        return slideInfoRepository.findByUserIdAndOriginFileNameContaining(userId, originFileName, pageable);
     }
 
     public Page<SlideInfo> findByUserIdAndCreatedDateBetween(String userId, LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable) {
@@ -55,6 +55,10 @@ public class SlideInfoService {
     }
     public Optional<SlideInfo> findByIdxAndOriginFileName(Long idx, String originFileName){
         return slideInfoRepository.findByIdxAndOriginFileName(idx, originFileName);
+    }
+
+    public Optional<SlideInfo> findByIdx(Long idx){
+        return slideInfoRepository.findById(idx);
     }
 
     @SneakyThrows
@@ -88,8 +92,8 @@ public class SlideInfoService {
         return isUpload;
     }
 
-    public Resource downloadFile(Long idx, String fileName) throws IOException {
-        Optional<SlideInfo> slideInfoOptional = slideInfoRepository.findByIdxAndOriginFileName(idx, fileName);
+    public Resource downloadFile(Long idx) throws IOException {
+        Optional<SlideInfo> slideInfoOptional = slideInfoRepository.findById(idx);
         Resource resource = null;
         if (slideInfoOptional.isPresent()) {
             SlideInfo slideInfo = slideInfoOptional.get();

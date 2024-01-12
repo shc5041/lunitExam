@@ -34,14 +34,14 @@ public class AnalysisDecisionController {
     public ResponseEntity<Page<AnalysisDecision>> findAll(@ParameterObject @PageableDefault(sort = {"idx"}, value = 20) Pageable pageable) {
         return new ResponseEntity<> ( analysisDecisionService.findAll(pageable), HttpStatus.OK);
     }
-    @GetMapping("/{userId}")
+    @GetMapping("/userId/{userId}")
     @Operation(description = "분석된 파일의 decision과 score를 userId 별로 반환 합니다. pageable의 default 값들은 page:0, size:20, sort: idx 필드로 됩니다. ")
     public ResponseEntity<Page<AnalysisDecision>> findByUserId(@PathVariable  String userId,
                                                                @ParameterObject @PageableDefault(sort = {"idx"}, value = 20)
                                                                Pageable pageable) {
         return new ResponseEntity<> (analysisDecisionService.findByUserId(userId, pageable), HttpStatus.OK);
     }
-    @GetMapping("/{fileName}")
+    @GetMapping("/fileName/{fileName}")
     @Operation(description = "분석된 파일의 decision과 score를 fileName 별로 반환 합니다. pageable의 default 값들은 page:0, size:20, sort: idx 필드로 됩니다. ")
     public ResponseEntity<Page<AnalysisDecision>> findByOriginFileName(@PathVariable  String fileName,
                                                                        @ParameterObject @PageableDefault(sort = {"idx"}, value = 20)
@@ -49,11 +49,11 @@ public class AnalysisDecisionController {
         return new ResponseEntity<>(analysisDecisionService.findByOriginFileName(fileName, pageable), HttpStatus.OK);
     }
 
-    @PostMapping("/decision/{slideInfoIdx}/{userId}/{fileName}")
+    @PostMapping("/decision/slideInfoIdx/{idx}/userId/{userId}")
     @Operation(description = "Upload된 파일을 분석 요청을 시작 합니다. 파일의 분석 결과는 json형태로 제공되며, grid분석 데이터는 gridAnalyses 객체의 배열 (20~50개 사이) 형태로 전달 됩니다. " +
             "또, grid 데이터의 개수가 20개 미만일 경우 오류가 발생되고 오류 내용은 'invalid grid data length' 입니다. ")
-    public ResponseEntity<AnalysisDecisionDto> requestGridAnalysis(@PathVariable Long slideInfoIdx, @PathVariable String userId, @PathVariable String fileName) {
-        return new ResponseEntity<>(analysisDecisionService.requestGridAnalysis(userId, slideInfoIdx, fileName), HttpStatus.OK);
+    public ResponseEntity<AnalysisDecisionDto> requestGridAnalysis(@PathVariable Long idx, @PathVariable String userId) {
+        return new ResponseEntity<>(analysisDecisionService.requestGridAnalysis(userId, idx), HttpStatus.OK);
     }
 
 }

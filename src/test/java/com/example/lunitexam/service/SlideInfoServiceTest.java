@@ -37,7 +37,7 @@ class SlideInfoServiceTest {
     @Test
     void findByUserIdAndOriginFileName() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("idx").descending());
-        Page<SlideInfo> slideInfoPage =  slideInfoService.findByUserIdAndOriginFileName("test","CMU-1-JP2K-33005.svs", pageable);
+        Page<SlideInfo> slideInfoPage =  slideInfoService.findByUserIdAndOriginFileNameContaining("test","CMU-1-JP2K-33005", pageable);
         assertEquals(slideInfoPage.getTotalElements(), 1);
     }
 }

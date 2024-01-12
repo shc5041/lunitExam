@@ -46,18 +46,17 @@ public class AnalysisDecisionService {
      * 또, grid data가 20개 미만이면 exception을 발생시킨다.
      * @param userId
      * @param slideInfoIdx
-     * @param originFileName
      */
     @Transactional
-    public AnalysisDecisionDto requestGridAnalysis(String userId,Long slideInfoIdx, String originFileName){
-        Optional<SlideInfo> slideInfoOptional = slideInfoService.findByIdxAndOriginFileName(slideInfoIdx,originFileName);
+    public AnalysisDecisionDto requestGridAnalysis(String userId,Long slideInfoIdx){
+        Optional<SlideInfo> slideInfoOptional = slideInfoService.findByIdx(slideInfoIdx);
         if(slideInfoOptional.isPresent()){
             //file 이 존재 하면 먼저 AnalysisDecision에 insert를 한후 이후에 grid 데이터 저장후 update를 해야한다.
             SlideInfo slideInfo = slideInfoOptional.get();
             if(Files.exists(Paths.get(slideInfo.getPath()))){
                 AnalysisDecision analysisDecision = AnalysisDecision.builder()
                                 .path(slideInfo.getPath())
-                                .originFileName(originFileName)
+                                .originFileName(slideInfo.getOriginFileName())
                                 .userId(userId)
                         .build();
                 analysisDecision = analysisDecisionRepository.save(analysisDecision);

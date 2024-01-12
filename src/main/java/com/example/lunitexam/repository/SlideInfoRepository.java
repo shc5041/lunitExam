@@ -16,7 +16,7 @@ public interface SlideInfoRepository extends JpaRepository<SlideInfo, Long> {
 
     Page<SlideInfo> findByUserId(String userId, Pageable pageable);
 
-    Page<SlideInfo> findByUserIdAndOriginFileName(String userId, String originFileName, Pageable pageable);
+    Page<SlideInfo> findByUserIdAndOriginFileNameContaining(String userId, String originFileName, Pageable pageable);
 
     Optional<SlideInfo> findByIdxAndOriginFileName(Long idx, String originFileName);
 

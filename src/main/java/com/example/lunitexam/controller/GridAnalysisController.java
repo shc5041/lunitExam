@@ -29,14 +29,14 @@ public class GridAnalysisController {
     public ResponseEntity<Page<GridAnalysis>> findAll(Pageable pageable) {
         return new ResponseEntity<> (  gridAnalysisService.findAll(pageable), HttpStatus.OK);
     }
-    @GetMapping("/{userId}")
+    @GetMapping("/userId/{userId}")
     @Operation(description = "분석을 한 사용자 userId로 분석된 Grid 데이터를 반환 합니다. pageable의 default 값들은 page:0, size:20, sort: idx 필드로 됩니다. ")
     public ResponseEntity<Page<GridAnalysis>> findByUserId(@PathVariable String userId, Pageable pageable) {
         return new ResponseEntity<> ( gridAnalysisService.findByUserId(userId, pageable), HttpStatus.OK);
     }
-    @GetMapping("/{analysisDecisionIdx}")
+    @GetMapping("/analysisDecisionIdx/{idx}")
     @Operation(description = "Analysis Decision key로 하위로 분석된 Grid 데이터를 반환 합니다. pageable의 default 값들은 page:0, size:20, sort: idx 필드로 됩니다. ")
-    public ResponseEntity<Page<GridAnalysis>> findByAnalysisDecisionIdx(@PathVariable Long analysisDecisionIdx, Pageable pageable) {
-        return new ResponseEntity<> ( gridAnalysisService.findByAnalysisDecisionIdx(analysisDecisionIdx, pageable), HttpStatus.OK);
+    public ResponseEntity<Page<GridAnalysis>> findByAnalysisDecisionIdx(@PathVariable Long idx, Pageable pageable) {
+        return new ResponseEntity<> ( gridAnalysisService.findByAnalysisDecisionIdx(idx, pageable), HttpStatus.OK);
     }
 }
