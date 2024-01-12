@@ -19,8 +19,5 @@ public interface SlideInfoRepository extends JpaRepository<SlideInfo, Long> {
     Page<SlideInfo> findByUserIdAndOriginFileNameContaining(String userId, String originFileName, Pageable pageable);
     Page<SlideInfo> findByUserIdAndOriginFileNameContainingAndCreatedDateBetween(String userId,String originFileName,
                                                                                  LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable);
-
-    Optional<SlideInfo> findByIdxAndOriginFileName(Long idx, String originFileName);
-
     Page<SlideInfo> findByUserIdAndCreatedDateBetween(String userId, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 }

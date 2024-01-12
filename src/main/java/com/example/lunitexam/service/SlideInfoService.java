@@ -2,7 +2,6 @@ package com.example.lunitexam.service;
 
 import com.example.lunitexam.exception.ErrorCode;
 import com.example.lunitexam.exception.LunitExamException;
-import com.example.lunitexam.model.dao.AnalysisDecision;
 import com.example.lunitexam.model.dao.SlideInfo;
 import com.example.lunitexam.repository.SlideInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,19 +49,17 @@ public class SlideInfoService {
     public Page<SlideInfo> findByUserIdAndOriginFileNameContaining(String userId, String originFileName, Pageable pageable) {
         return slideInfoRepository.findByUserIdAndOriginFileNameContaining(userId, originFileName, pageable);
     }
+
     public Page<SlideInfo> findByUserIdAndOriginFileNameContainingAndCreatedDateBetween
             (String userId, String originFileName, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
-        return slideInfoRepository.findByUserIdAndOriginFileNameContainingAndCreatedDateBetween(userId, originFileName,startDate, endDate, pageable);
+        return slideInfoRepository.findByUserIdAndOriginFileNameContainingAndCreatedDateBetween(userId, originFileName, startDate, endDate, pageable);
     }
 
     public Page<SlideInfo> findByUserIdAndCreatedDateBetween(String userId, LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable) {
         return slideInfoRepository.findByUserIdAndCreatedDateBetween(userId, startDateTime, endDateTime, pageable);
     }
-    public Optional<SlideInfo> findByIdxAndOriginFileName(Long idx, String originFileName){
-        return slideInfoRepository.findByIdxAndOriginFileName(idx, originFileName);
-    }
 
-    public Optional<SlideInfo> findByIdx(Long idx){
+    public Optional<SlideInfo> findByIdx(Long idx) {
         return slideInfoRepository.findById(idx);
     }
 
@@ -149,7 +146,7 @@ public class SlideInfoService {
 
     public Resource getFileAsResource(String path) throws IOException {
         Path dirPath = Paths.get(path);
-        if(dirPath.toFile().exists()){
+        if (dirPath.toFile().exists()) {
             return new UrlResource(dirPath.toUri());
         }
         return null;

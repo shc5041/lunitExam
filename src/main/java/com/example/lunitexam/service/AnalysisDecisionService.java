@@ -50,6 +50,7 @@ public class AnalysisDecisionService {
      * 분석 요청이 들어오면 gridAnalysis로 분석 요청을 한다.
      * 그 결과를 가지고 score 및 decision를 결정한다.
      * 또, grid data가 20개 미만이면 exception을 발생시킨다.
+     *
      * @param userId
      * @param slideInfoIdx
      */
@@ -70,7 +71,7 @@ public class AnalysisDecisionService {
                 analysisDecision.setGridAnalyses(gridAnalysisList);
                 analysisDecision.setScore(getRandomFloat());
                 analysisDecision.setDecision(getRandomBoolean());
-                AnalysisDecisionDto analysisDecisionDto = analysisDecision.toEntity(analysisDecision);
+                AnalysisDecisionDto analysisDecisionDto = analysisDecision.toEntity();
                 analysisDecisionRepository.save(analysisDecision);
                 if(gridAnalysisList.size() < 20) {
                     throw new LunitExamException(ErrorCode.BAD_GRID_RESULT_DATA);

@@ -13,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -66,7 +65,7 @@ public class AnalysisDecision {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedDate;
 
-    public AnalysisDecisionDto toEntity(AnalysisDecision analysisDecision){
+    public AnalysisDecisionDto toEntity(){
         return AnalysisDecisionDto.builder()
                 .idx(idx)
                 .createdDate(createdDate)

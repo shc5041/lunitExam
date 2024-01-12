@@ -52,7 +52,7 @@ public class GridAnalysisController {
                                           @ParameterObject @PageableDefault(sort = {"idx"}, value = 20)
                                           Pageable pageable) {
         if (startDateTime != null && endDateTime != null) {
-
+            return new ResponseEntity<>(gridAnalysisService.findByUserIdAndCreatedDateBetween(userId, startDateTime, endDateTime, pageable), HttpStatus.OK);
         } else if (startDateTime == null && endDateTime != null) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         } else if (startDateTime != null && endDateTime == null) {

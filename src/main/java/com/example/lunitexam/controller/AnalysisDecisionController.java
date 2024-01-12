@@ -1,7 +1,6 @@
 package com.example.lunitexam.controller;
 
 import com.example.lunitexam.model.dao.AnalysisDecision;
-import com.example.lunitexam.model.dao.SlideInfo;
 import com.example.lunitexam.model.dto.AnalysisDecisionDto;
 import com.example.lunitexam.service.AnalysisDecisionService;
 import io.swagger.v3.oas.annotations.Operation;

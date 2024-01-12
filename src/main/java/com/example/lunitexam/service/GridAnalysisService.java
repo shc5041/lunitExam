@@ -79,8 +79,7 @@ public class GridAnalysisService {
     private int getRandomCount() {
         Random random = new Random();
         // 17부터 50까지의 난수 생성 (0이 나올수 있으므로 max+1을 해주고 또 초기값을 설정해야 하므로 sliceMin을 설정함.
-        int randomNumber = random.nextInt(sliceMax + 1 - sliceMin) + sliceMin;
-        return randomNumber;
+        return random.nextInt(sliceMax + 1 - sliceMin) + sliceMin;
     }
     private Float getRandomFloat(Float value) {
         Random random = new Random();
