@@ -41,14 +41,14 @@ public class SlideInfoController {
     private final SlideInfoService slideInfoService;
 
     /*파일 업로드, 업로드 결과 반환*/
-    @Operation(description = "의료 사진을 upload 하며 파라미터로 userId값이 필요하며, userId 값은 아무값이나 넣으면 됩니다. ")
+    @Operation(description = "의료 사진을 upload 하며 파라미터로 userId값이 필요하며, userId 값은 아무값이나 넣으면 됩니다. ",operationId = "2")
     @PostMapping(value = "/upload/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> uploadFile(@PathVariable String userId, @RequestPart(value = "file") MultipartFile file) {
         return new ResponseEntity<>(slideInfoService.uploadFile(userId, file), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    @Operation(description = "파일 upload된 data를 전체 가져오며, pageable의 default 값들은 page:0, size:20, sort: idx 필드로 됩니다. ")
+    @Operation(description = "파일 upload된 data를 전체 가져오며, pageable의 default 값들은 page:0, size:20, sort: idx 필드로 됩니다. ",operationId = "1")
     public ResponseEntity<Page<SlideInfo>> findByUserIdAndOriginFileName(@ParameterObject @PageableDefault(sort = {"idx"}, value = 20) Pageable pageable) {
         return new ResponseEntity<>(slideInfoService.findAll(pageable), HttpStatus.OK);
     }

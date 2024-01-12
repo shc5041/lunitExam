@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: lunit
-      MARIADB_DATABASE: lunit
+      MARIADB_DATABASE: lunitexam
       MARIADB_USER: lunit
       MARIADB_PASSWORD: lunit
     networks:
@@ -29,6 +29,7 @@ services:
       LUNIT_DB_USER: lunit
       LUNIT_DB_PASSWORD: lunit
       LUNIT_DB_DOWNLOAD: /app/download
+      LUNIT_SERVER_PORT: 8280
     networks:
     - lunitn
 
