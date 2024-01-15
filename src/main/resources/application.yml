@@ -4,10 +4,9 @@ spring:
   # mariaDB
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-#    url: jdbc:mariadb://172.19.148.92:3306/lunitexam
-    url: jdbc:mariadb://${LUNIT_DB_HOST:172.19.148.92:3306}/lunitexam?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mariadb://${LUNIT_DB_HOST:127.0.0.1:3306}/lunitexam?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${LUNIT_DB_USER:root}
-    password: ${LUNIT_DB_PASSWORD:shin6182!}
+    password: ${LUNIT_DB_PASSWORD:lunitexam}
     hikari:
       data-source-properties:
         characterEncoding: UTF-8
